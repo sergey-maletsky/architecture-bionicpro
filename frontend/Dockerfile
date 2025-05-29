@@ -7,7 +7,9 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 
 # Install dependencies
-RUN npm ci
+RUN npm install
+RUN npm install @babel/plugin-proposal-private-property-in-object --save-dev
+RUN npx update-browserslist-db@latest
 
 # Copy source code
 COPY . .
@@ -25,7 +27,7 @@ COPY --from=build /app/build /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Expose port
-EXPOSE 3000
+EXPOSE 3001
 
 # Start nginx
 CMD ["nginx", "-g", "daemon off;"]
